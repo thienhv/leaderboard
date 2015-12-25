@@ -6,6 +6,8 @@
   <h1>Welcome to Meteor!</h1>
 
   {{> leaderboard}}
+
+  {{> addPlayerForm}}
 </body>
 
 <template name="hello">
@@ -29,4 +31,11 @@
   <input type="button" class="decrement" value="Take 5 Points">
 
   {{ otherHelperFunction }}
+</template>
+
+<template name="addPlayerForm">
+  <form>
+    <input type="text" name="playerName">
+    <input type="submit" value="Add Player">
+  </form>
 </template>
