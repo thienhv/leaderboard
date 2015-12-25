@@ -1,4 +1,10 @@
+PlayersList = new Mongo.Collection('players');
+
+console.log(PlayersList)
+
 if (Meteor.isClient) {
+  console.log("Hello client");
+
   // counter starts at 0
   Session.setDefault('counter', 0);
 
@@ -14,9 +20,45 @@ if (Meteor.isClient) {
       Session.set('counter', Session.get('counter') + 1);
     }
   });
+
+
+  Template.leaderboard.helpers({
+    'player': function(){
+      return PlayersList.find()
+    },
+    'otherHelperFunction': function(){
+      return "Some other function"
+    },
+    'selectedClass': function(){
+      var playerId = this._id;
+      var selectedPlayer = Session.get('selectedPlayer');
+      if(playerId == selectedPlayer){
+        return "selected"
+      }
+    }
+  });
+  Template.leaderboard.events({
+    'click .player': function(){
+      console.log('clicked player');
+      var playerId = this._id;
+      Session.set('selectedPlayer', playerId);
+      var selectedPlayer = Session.get('selectedPlayer');
+      console.log(selectedPlayer);
+    },
+    'click .decrement': function(){
+        var selectedPlayer = Session.get('selectedPlayer');
+        PlayersList.update(selectedPlayer, {$inc: {score: -5} });
+    },
+    'click .increment': function(){
+      var selectedPlayer = Session.get('selectedPlayer');
+      PlayersList.update(selectedPlayer, {$inc: {score: 5} });
+    }
+  });
 }
 
 if (Meteor.isServer) {
+  console.log("Hello server");
+
   Meteor.startup(function () {
     // code to run on server at startup
   });
