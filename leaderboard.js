@@ -5,6 +5,8 @@ console.log(PlayersList)
 if (Meteor.isClient) {
   console.log("Hello client");
 
+  Meteor.subscribe('thePlayers');
+
   // counter starts at 0
   Session.setDefault('counter', 0);
 
@@ -25,7 +27,7 @@ if (Meteor.isClient) {
   Template.leaderboard.helpers({
     'player': function(){
       var currentUserId = Meteor.userId();
-      return PlayersList.find({createdBy: currentUserId}, {sort: {score: -1, name: 1}});
+      return PlayersList.find({}, {sort: {score: -1, name: 1}});
     },
     'otherHelperFunction': function(){
       return "Some other function"
@@ -81,6 +83,12 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   console.log("Hello server");
+
+  Meteor.publish('thePlayers', function(){
+    var currentUserId = this.userId;
+    return PlayersList.find({createdBy: currentUserId});
+  });
+
 
   Meteor.startup(function () {
     // code to run on server at startup
