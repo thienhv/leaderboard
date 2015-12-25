@@ -4,10 +4,11 @@
 
 <body>
   <h1>Welcome to Meteor!</h1>
+  {{> loginButtons }}
 
-  {{> leaderboard}}
+  {{> leaderboard }}
 
-  {{> addPlayerForm}}
+  {{> addPlayerForm }}
 </body>
 
 <template name="hello">
@@ -37,8 +38,10 @@
 </template>
 
 <template name="addPlayerForm">
+{{#if currentUser}}
   <form>
     <input type="text" name="playerName">
     <input type="submit" value="Add Player">
   </form>
+{{/if}}
 </template>
